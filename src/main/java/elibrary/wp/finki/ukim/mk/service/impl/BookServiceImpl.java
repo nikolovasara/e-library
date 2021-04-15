@@ -40,6 +40,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Optional<Book> lend(Long id) {
+        Book book=this.bookRepository.findById(id).orElseThrow(()->new RuntimeException("Book not found"));
+        if(book.getAvailableCopies()==0){
+            return Optional.of(book);
+        }
+        book.setAvailableCopies(book.getAvailableCopies()-1);
+        this.bookRepository.save(book);
+        return Optional.of(book);
+    }
+
+    @Override
     public Optional<Book> save(String name, Integer bookCategory, Long authorId, Integer availableCopies) {
         BookCategory category=BookCategory.values()[bookCategory];
         Author author=this.authorRepository.findById(authorId).orElseThrow(()->new RuntimeException("Author not found"));
@@ -75,7 +86,7 @@ public class BookServiceImpl implements BookService {
 
         BookCategory category=BookCategory.values()[bookCategory];
         book.setCategory(category);
-
+        this.bookRepository.save(book);
         return Optional.of(book);
     }
 
@@ -91,7 +102,7 @@ public class BookServiceImpl implements BookService {
 
         BookCategory category=BookCategory.values()[bookDto.getCategory()];
         book.setCategory(category);
-
+        this.bookRepository.save(book);
         return Optional.of(book);    }
 
     @Override

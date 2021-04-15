@@ -28,7 +28,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/assets/**", "/register", "/products", "/api/**").permitAll()
+                .antMatchers("/", "/home", "/assets/**", "/register", "/books", "/api/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

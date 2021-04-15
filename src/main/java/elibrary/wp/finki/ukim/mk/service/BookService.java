@@ -13,6 +13,8 @@ public interface BookService {
 
     Optional<Book> findByName(String name);
 
+    Optional<Book> lend(Long id);
+
     Optional<Book> save(String name, Integer category, Long author, Integer availableCopies);
 
     Optional<Book> save(BookDto bookDto);

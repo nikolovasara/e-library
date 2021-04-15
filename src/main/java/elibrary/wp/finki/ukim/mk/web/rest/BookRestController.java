@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/books")
 public class BookRestController {
     private final BookService bookService;
@@ -26,21 +26,21 @@ public class BookRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Book> findById(@PathVariable Long id) {
         return this.bookService.findById(id)
-                .map(product -> ResponseEntity.ok().body(product))
+                .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/add")
     public ResponseEntity<Book> save(@RequestBody BookDto bookDto) {
         return this.bookService.save(bookDto)
-                .map(product -> ResponseEntity.ok().body(product))
+                .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<Book> save(@PathVariable Long id, @RequestBody BookDto bookDto) {
         return this.bookService.edit(id, bookDto)
-                .map(product -> ResponseEntity.ok().body(product))
+                .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
@@ -49,6 +49,13 @@ public class BookRestController {
         this.bookService.deleteById(id);
         if(this.bookService.findById(id).isEmpty()) return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/lend/{id}")
+    public ResponseEntity lend(@PathVariable Long id){
+        return this.bookService.lend(id)
+                .map(book->ResponseEntity.ok().body(book))
+                .orElseGet(()->ResponseEntity.badRequest().build());
     }
 
 }
